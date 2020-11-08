@@ -27,6 +27,7 @@ class Cell:
 
         return all(self.walls.values())
 
+
     def knock_down_wall(self, other, wall):
         """Knock down the wall between cells self and other."""
 
@@ -52,6 +53,9 @@ class Maze:
         """Return the Cell object at (x,y)."""
 
         return self.maze_map[x][y]
+
+    def get_walls(self,x,y):
+        return  self.maze_map[x][y].walls
 
     def __str__(self):
         """Return a (crude) string representation of the maze."""
@@ -162,3 +166,104 @@ class Maze:
             cell_stack.append(current_cell)
             current_cell = next_cell
             nv += 1
+
+
+
+delta = {
+    'W': [0, -1],
+    'E': [0, 1],
+    'S': [1, 0],
+    'N': [-1, 0],
+}
+
+class Player:
+
+    '''
+    the player has a position defined by an array of 2 coordinates [x, y]
+    '''
+
+
+    def __init__(self, pos = [0, 0]):
+        self.Player_pos = pos
+
+    '''
+    Spawn player near grid vall
+    '''
+    def new_pos(self, new_pos):
+        self.Player_pos[0] += new_pos[0]
+        self.Player_pos[1] += new_pos[1]
+
+
+    def spawn(self):
+        pass
+
+    def get_pos(self):
+        return self.Player_pos
+
+    def move(self, direction, walls):
+        if direction == 'W' and not walls.get("W"):
+            self.new_pos(delta.get('W'))
+        if direction == 'E' and not walls.get("E"):
+            self.new_pos(delta.get('E'))
+        if direction == 'S' and not walls.get("S"):
+            self.new_pos(delta.get('S'))
+        if direction == 'N' and not walls.get("N"):
+            self.new_pos(delta.get('N'))
+
+class Treasure:
+
+    def __init__(self, pos = [0, 0]):
+        self.treasure_pos = pos
+        self.is_taken = False
+
+    def spawn(self, nx, ny, players):
+        possible_positions = []
+        for i in range(nx):
+            for j in range(ny):
+                if  not [i, j] in players:
+                    possible_positions.append([i, j])
+
+        self.treasure_pos = random.choice(possible_positions)
+
+
+    def is_taken(self, player_pos):
+        return self.treasure_pos == player_pos
+
+
+
+
+class Game:
+
+    def __init__(self, nx, ny):
+        self.nx = nx
+        self.ny = ny
+        self.maze = Maze(nx, ny)
+        self.player = Player()
+        self.treasure = Treasure()
+
+    def game_start(self):
+        self.maze.make_maze()
+        self.player.spawn()
+        self.treasure.spawn(self.nx, self.ny, self.player.get_pos())
+
+    def player_move(self, direction):
+        x, y = self.player.get_pos()
+        walls = self.maze.get_walls(x, y)
+        self.player.move(direction=direction, walls=walls)
+
+    def svg(self):
+        self.maze.write_svg('maze.svg')
+
+# Maze dimensions (ncols, nrows)
+nx, ny = 15, 15
+# Maze entry position
+ix, iy = 0, 0
+
+game = Game(nx, ny)
+game.game_start()
+game.svg()
+game.player_move("W")
+game.player_move("E")
+game.player_move("N")
+game.player_move("S")
+
