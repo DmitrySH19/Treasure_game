@@ -16,18 +16,12 @@
 				<h1 class="logo">Регистрация</h1>
 			    <form class="autorisation" action="" method="post">
 					{% csrf_token %}
-				    <label for="login">Login</label>
-				    <input type="text" name="login" class="login" placeholder="Login">
-				    <label for="password">Password</label>
-				    <input type="password" name="password" class="password" placeholder="Password">
-					<label for="Repeat password">Repeat password</label>
-				    <input type="password" name="repeat_pass" class="repeat_password" placeholder="Password">
-					<label for="E-mail">E-mail</label>
-				    <input type="email" name="email" class="email" placeholder="Password">
+				    {{ user_form.as_p }}
 
 				    <div class="enter-cont">
 				    	<button class="enter" name="Login">Register</button>
 					</div>
+
 			    </form>
 		    </div>
 		</section>

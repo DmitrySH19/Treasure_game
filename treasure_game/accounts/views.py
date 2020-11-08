@@ -24,13 +24,14 @@ def user_login(request):
                         return HttpResponse('Disabled account')
                 else:
                     return HttpResponse('Invalid login')
-        if'Registration' in request.POST:
+        if 'Registration' in request.POST:
             return HttpResponsePermanentRedirect("/account/registration/")
     else:
         form = LoginForm()
         data = default
+        # noinspection PyTypeChecker
         data.update({'form': form})
-        return render(request, 'login.html', context=data)
+        return render(request, 'login.html', {'form': form})
 
 
 def register(request):

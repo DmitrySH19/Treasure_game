@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+from channels.routing import ProtocolTypeRouter
+from django.core.asgi import get_asgi_application
+
+ASGI_APPLICATION = 'treasure_game.asgi.application'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +30,7 @@ SECRET_KEY = '-=izxvh5je)4gvu)94ipp5ebd5ka%1ptz3(w3xxr4v47i^h%%#'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'ac481f8a4f73.ngrok.io',
+
 ]
 
 
@@ -39,8 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'gameapp'
+    'gameapp',
+    'channels',
+    'chat',
 ]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,3 +138,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
