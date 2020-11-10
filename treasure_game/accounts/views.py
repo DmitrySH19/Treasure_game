@@ -31,7 +31,7 @@ def user_login(request):
         data = default
         # noinspection PyTypeChecker
         data.update({'form': form})
-        return render(request, 'login.html', {'form': form})
+        return render(request, 'index.html', {'form': form})
 
 
 def register(request):

@@ -19,7 +19,7 @@ def index(request):
         return HttpResponse("<h2>Hello, {0}, your password is {1}</h2>".format(name, password))
     else:
         userform = UserForm()
-        return render(request, "login.html", {"form": userform})
+        return render(request, "index.html", {"form": userform})
 
 def start_game(request):
     return HttpResponse('game.html')

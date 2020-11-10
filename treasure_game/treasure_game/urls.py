@@ -20,6 +20,6 @@ from accounts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('chat/', include('chat.urls')),
+    path('chat/', include('chat.urls')),
     path('account/', include('accounts.urls')),
 ]
