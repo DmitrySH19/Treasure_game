@@ -12,15 +12,21 @@ import os
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
-import chat.routing
+
+from django.urls import path, re_path
+from django.conf.urls import url
+from chat import consumers
+from gameapp import game_users
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'treasure_game.settings')
 
-application = ProtocolTypeRouter({
+chat_application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
-        URLRouter(
-            chat.routing.websocket_urlpatterns
-        )
+        URLRouter([
+            re_path(r'ws/account/login/(?P<game_room>\w+)/$', game_users.GameUsers.as_asgi()),
+            re_path(r'ws/chat/(?P<room_name>\w+)/$', consumers.ChatConsumer.as_asgi()),
+        ])
     ),
 })
+
